@@ -1,6 +1,7 @@
 import gSAFTmm
 from scipy import optimize
 import math
+import json
 
 ################# Define System #########################
 
@@ -77,49 +78,51 @@ def csv_recorder(file, temperature, solubility):
 
 ############### actual dictionary #########################
 
-data_list = dict({
-    'NaCl': {
-        'gf_ref': -384.138,
-        'Cpo_ref': 0.0505,
-        'hf_ref': -411.153,
-    },
-    'Na+': {
-        'gf_ref': -261.905,
-        'Cpo_ref': 0.0464,
-        'hf_ref': -240.12,
-    },
-    'Cl-': {
-        'gf_ref': -131.228,
-        'Cpo_ref': -0.1364,
-        'hf_ref': -167.159,
-    },
-    'KCl': {
-        'gf_ref': -409.14,
-        'Cpo_ref': 0.0513,
-        'hf_ref': -436.744,
-    },
-    'K+': {
-        'gf_ref': -283.27,
-        'Cpo_ref': 0.0218,
-        'hf_ref': -252.38,
-    },
-    'K2SO4': {
-        'gf_ref': -1321.37,
-        'Cpo_ref': 0.13146,
-        'hf_ref': -1437.79,
-    },
-    'SO42-': {
-        'gf_ref': -744.53,
-        'Cpo_ref': -0.293,
-        'hf_ref': -909.27,
-    }
+# data_list = dict({
+#     'NaCl': {
+#         'gf_ref': -384.138,
+#         'Cpo_ref': 0.0505,
+#         'hf_ref': -411.153,
+#     },
+#     'Na+': {
+#         'gf_ref': -261.905,
+#         'Cpo_ref': 0.0464,
+#         'hf_ref': -240.12,
+#     },
+#     'Cl-': {
+#         'gf_ref': -131.228,
+#         'Cpo_ref': -0.1364,
+#         'hf_ref': -167.159,
+#     },
+#     'KCl': {
+#         'gf_ref': -409.14,
+#         'Cpo_ref': 0.0513,
+#         'hf_ref': -436.744,
+#     },
+#     'K+': {
+#         'gf_ref': -283.27,
+#         'Cpo_ref': 0.0218,
+#         'hf_ref': -252.38,
+#     },
+#     'K2SO4': {
+#         'gf_ref': -1321.37,
+#         'Cpo_ref': 0.13146,
+#         'hf_ref': -1437.79,
+#     },
+#     'SO42-': {
+#         'gf_ref': -744.53,
+#         'Cpo_ref': -0.293,
+#         'hf_ref': -909.27,
+#     }
 
-})
+# })
 
 
 ############### get data from csv #########################
 
 def get_properties(compounds_plus, compounds_minus):
+    file_temp = open('./properties.json').read()
+    data_list = json.loads(file_temp)
     gf_ref = 0
     Cpo_ref = 0
     hf_ref = 0
