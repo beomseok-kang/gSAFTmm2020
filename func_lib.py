@@ -36,10 +36,10 @@ def get_ksp(delta_g, temperature):
     exponent = - delta_g / (R * temperature)
     return math.exp(exponent)
 
-################ initial guess ############################
+################ initial guess ###########################
 
 def initial_guess_getter(Ksp_val, compounds_num):
-    return math.exp((1.0/compounds_num) * math.log(Ksp_val))
+    return math.pow(Ksp_val, 1.0/compounds_num)
 
 ################ activity obj func #######################
 
@@ -74,3 +74,64 @@ def range_with_steps(bound_low, bound_up, step) :
 
 def csv_recorder(file, temperature, solubility):
     file.write(str(temperature) + ',' + str(solubility) + '\n')
+
+############### actual dictionary #########################
+
+data_list = dict({
+    'NaCl': {
+        'gf_ref': -384.138,
+        'Cpo_ref': 0.0505,
+        'hf_ref': -411.153,
+    },
+    'Na+': {
+        'gf_ref': -261.905,
+        'Cpo_ref': 0.0464,
+        'hf_ref': -240.12,
+    },
+    'Cl-': {
+        'gf_ref': -131.228,
+        'Cpo_ref': -0.1364,
+        'hf_ref': -167.159,
+    },
+    'KCl': {
+        'gf_ref': -409.14,
+        'Cpo_ref': 0.0513,
+        'hf_ref': -436.744,
+    },
+    'K+': {
+        'gf_ref': -283.27,
+        'Cpo_ref': 0.0218,
+        'hf_ref': -252.38,
+    },
+    'K2SO4': {
+        'gf_ref': -1321.37,
+        'Cpo_ref': 0.13146,
+        'hf_ref': -1437.79,
+    },
+    'SO42-': {
+        'gf_ref': -744.53,
+        'Cpo_ref': -0.293,
+        'hf_ref': -909.27,
+    }
+
+})
+
+
+############### get data from csv #########################
+
+def get_properties(compounds_plus, compounds_minus):
+    gf_ref = 0
+    Cpo_ref = 0
+    hf_ref = 0
+    for compound_plus in compounds_plus:
+        temp_properties = data_list.get(compound_plus)
+        gf_ref += temp_properties.get('gf_ref')
+        Cpo_ref += temp_properties.get('Cpo_ref')
+        hf_ref += temp_properties.get('hf_ref')
+    for compound_minus in compounds_minus:
+        temp_properties = data_list.get(compound_minus)
+        gf_ref -= temp_properties.get('gf_ref')
+        Cpo_ref -= temp_properties.get('Cpo_ref')
+        hf_ref -= temp_properties.get('hf_ref')
+    return gf_ref * 1000, Cpo_ref * 1000, hf_ref * 1000
+

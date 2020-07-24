@@ -6,6 +6,15 @@ compounds = [
     "Cl-"
 ]
 
+compounds_plus = [
+    'Na+',
+    'Cl-'
+]
+
+compounds_minus = [
+    'NaCl'
+]
+
 T_low = 280.0
 T_up = 500.0
 T_step = 1.0
@@ -16,24 +25,9 @@ P = 101325.0
 
 filename = 'Solubility_NaCl.csv'
 
-Nagf_ref = -261.905
-Clgf_ref = -131.228
-NaClgf_ref = -384.138
-
-Na_Cpo_ref = 0.0464
-Cl_Cpo_ref = -0.1364
-NaCl_Cpo_ref = 0.05050
-
-Nahf_ref = -240.120
-Clhf_ref = -167.159
-NaClhf_ref = -411.153
-
-delta_g_ref = (Nagf_ref + Clgf_ref - NaClgf_ref) * 1000.0
-delta_Cp_ref = (Na_Cpo_ref + Cl_Cpo_ref - NaCl_Cpo_ref) * 1000.0
-delta_H_ref = (Nahf_ref + Clhf_ref - NaClhf_ref) * 1000.0
-
 ################ Calculations #############################
 
+delta_g_ref, delta_Cp_ref, delta_H_ref = f.get_properties(compounds_plus, compounds_minus)
 S = f.saft_system(compounds)
 delta_S_ref = f.S_ref_getter(delta_H_ref, delta_g_ref, T_ref)
 T_range = f.range_with_steps(T_low, T_up, T_step)
